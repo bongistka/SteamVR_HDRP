@@ -452,8 +452,9 @@ namespace Valve.VR
                         texture.Apply();
                     }
 
-                    material = new Material(shader != null ? shader : Shader.Find("Standard"));
-                    material.mainTexture = texture;
+                    material = new Material(shader != null ? shader : Shader.Find("HDRP/Lit"));
+                    material.SetTexture("_MainTex", texture);
+                    material.SetTexture("_BaseColorMap", texture);
                     //material.hideFlags = HideFlags.DontUnloadUnusedAsset;
 
                     materials[renderModel.diffuseTextureId] = material;
