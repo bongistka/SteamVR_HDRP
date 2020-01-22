@@ -248,6 +248,7 @@ namespace Valve.VR.InteractionSystem
 #else
 				lineRenderers[i].startColor = color;
 				lineRenderers[i].endColor = color;
+                material.SetColor("_UnlitColor", new Color(color.r, color.g, color.b, 0.5f));
 #endif
             }
         }
