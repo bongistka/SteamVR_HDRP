@@ -250,6 +250,7 @@ GameObject:
   - component: {fileID: 5672732972385069485}
   - component: {fileID: 7155698529009346444}
   - component: {fileID: 522402687832666163}
+  - component: {fileID: 4481284109767295785}
   m_Layer: 0
   m_Name: Handle
   m_TagString: Untagged
@@ -318,6 +319,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &4481284109767295785
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6033871931139442614}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.023653824, y: 0.18161449, z: 0.06347135}
+  m_Center: {x: 4.656613e-10, y: -0.08038889, z: -0.031735674}
 --- !u!1 &6674555428210328195
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +343,8 @@ GameObject:
   - component: {fileID: 93186232492395292}
   - component: {fileID: 8179520196058919990}
   - component: {fileID: 7250790076376816994}
+  - component: {fileID: 6909021644842382067}
+  - component: {fileID: 3766588801910302459}
   m_Layer: 0
   m_Name: WindowSmall
   m_TagString: Untagged
@@ -399,3 +415,94 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &6909021644842382067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6674555428210328195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b93b6a877adcbf94c89a9d6e0c0e844d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activateActionSetOnAttach:
+    actionSetPath: 
+  hideHandOnAttach: 1
+  hideSkeletonOnAttach: 0
+  hideControllerOnAttach: 0
+  handAnimationOnPickup: 0
+  setRangeOfMotionOnPickup: -1
+  useHandObjectAttachmentPoint: 1
+  attachEaseIn: 0
+  snapAttachEaseInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  snapAttachEaseInTime: 0.15
+  snapAttachEaseInCompleted: 0
+  skeletonPoser: {fileID: 0}
+  handFollowTransform: 1
+  highlightOnHover: 1
+  hideHighlight:
+  - {fileID: 340468951848886873}
+  hoverPriority: 0
+--- !u!114 &3766588801910302459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6674555428210328195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f32883eed859804dbb0c5fedac91496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axisOfRotation: 1
+  childCollider: {fileID: 4481284109767295785}
+  linearMapping: {fileID: 0}
+  hoverLock: 1
+  limited: 1
+  frozenDistanceMinMaxThreshold: {x: 0.1, y: 0.2}
+  onFrozenDistanceThreshold:
+    m_PersistentCalls:
+      m_Calls: []
+  minAngle: -90
+  freezeOnMin: 0
+  onMinAngle:
+    m_PersistentCalls:
+      m_Calls: []
+  maxAngle: 0
+  freezeOnMax: 0
+  onMaxAngle:
+    m_PersistentCalls:
+      m_Calls: []
+  forceStart: 0
+  startAngle: 0
+  rotateGameObject: 1
+  debugPath: 0
+  dbgPathLimit: 50
+  debugText: {fileID: 0}
+  outAngle: 0
