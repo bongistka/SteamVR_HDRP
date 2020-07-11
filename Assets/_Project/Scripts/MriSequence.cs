@@ -7,8 +7,9 @@ public class MriSequence : MonoBehaviour
 {
     public AudioSource mriSound;
     public AudioClip[] mriClips;
-    public Collider mriCollider;
+    public GameObject player;
     public GameObject movingPart;
+    public GameObject headPosition;
 
     [Range(0,1)]
     public float speed;
@@ -28,24 +29,32 @@ public class MriSequence : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void StartSequence()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            StartCoroutine(FmriSequence(0));
-            StartCoroutine(MoveFmriBed());
-        }
+        
+        player.transform.parent = movingPart.transform;
+        StartCoroutine(FmriSequence(0));
+        StartCoroutine(MoveFmriBed());
+    }
+
+    public void SetPlayerPosition()
+    {
+        //Quaternion rotDif = GameObject.FindWithTag("Player").transform.rotation * Quaternion.Inverse(player.transform.rotation);
+        //player.transform.rotation = Quaternion.AngleAxis(90,Vector3.up) * rotDif * player.transform.rotation;
+        Vector3 difference = GameObject.FindWithTag("Player").transform.position - player.transform.position;
+        player.transform.position = headPosition.transform.position - difference;
     }
 
     private IEnumerator MoveFmriBed()
     {
-        while (movingPart.transform.position.x > endPosition)
+        float finalPosition = movingPart.transform.position.x + endPosition;
+        while (movingPart.transform.position.x > finalPosition)
         {
             movingPart.transform.position -= new Vector3(speed, 0, 0);
             yield return new WaitForEndOfFrame();
         }
 
-        movingPart.transform.position = new Vector3(speed, movingPart.transform.position.y, movingPart.transform.position.z);
+        movingPart.transform.position = new Vector3(finalPosition, movingPart.transform.position.y, movingPart.transform.position.z);
         yield return new WaitForEndOfFrame();
     }
 
