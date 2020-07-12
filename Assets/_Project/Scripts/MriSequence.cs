@@ -33,7 +33,6 @@ public class MriSequence : MonoBehaviour
     {
         
         player.transform.parent = movingPart.transform;
-        StartCoroutine(FmriSequence(0));
         StartCoroutine(MoveFmriBed());
     }
 
@@ -43,6 +42,11 @@ public class MriSequence : MonoBehaviour
         //player.transform.rotation = Quaternion.AngleAxis(90,Vector3.up) * rotDif * player.transform.rotation;
         Vector3 difference = GameObject.FindWithTag("Player").transform.position - player.transform.position;
         player.transform.position = headPosition.transform.position - difference;
+    }
+
+    public void StartScanning()
+    {
+        StartCoroutine(FmriSequence(0));
     }
 
     private IEnumerator MoveFmriBed()
