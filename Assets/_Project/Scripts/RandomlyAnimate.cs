@@ -26,7 +26,7 @@ public class RandomlyAnimate : MonoBehaviour
         animator.SetBool("IsHappy", true);
         float randomTime = Random.Range(1, 20);
         yield return new WaitForSeconds(randomTime);
-        Debug.Log("Laborant is randomly happy");
+        //Debug.Log("Laborant is randomly happy");
         animator.SetBool("IsHappy", false);
     }
 }

@@ -6,13 +6,20 @@ using UnityEngine;
 public class MriSequence : MonoBehaviour
 {
     public AudioSource mriSound;
+    public AudioSource hydraulicSound;
     public AudioClip[] mriClips;
+
     public GameObject player;
+
+    public GameObject hydraulicBed;
     public GameObject movingPart;
     public GameObject headPosition;
 
     [Range(0,1)]
     public float speed;
+
+    public float bedStart;
+    private float bedEnd;
 
     public float endPosition;
     private float startPosition;
@@ -21,6 +28,10 @@ public class MriSequence : MonoBehaviour
     void Start()
     {
         startPosition = movingPart.transform.position.x;
+        bedEnd = hydraulicBed.transform.position.y;
+        Vector3 bedPosition = hydraulicBed.transform.position;
+        bedPosition.y = bedStart;
+        hydraulicBed.transform.position = bedPosition;
     }
 
     // Update is called once per frame
@@ -31,15 +42,12 @@ public class MriSequence : MonoBehaviour
 
     public void StartSequence()
     {
-        
         player.transform.parent = movingPart.transform;
         StartCoroutine(MoveFmriBed());
     }
 
     public void SetPlayerPosition()
     {
-        //Quaternion rotDif = GameObject.FindWithTag("Player").transform.rotation * Quaternion.Inverse(player.transform.rotation);
-        //player.transform.rotation = Quaternion.AngleAxis(90,Vector3.up) * rotDif * player.transform.rotation;
         Vector3 difference = GameObject.FindWithTag("Player").transform.position - player.transform.position;
         player.transform.position = headPosition.transform.position - difference;
     }
@@ -51,15 +59,36 @@ public class MriSequence : MonoBehaviour
 
     private IEnumerator MoveFmriBed()
     {
+        yield return RaiseHydraulicBed();
+        hydraulicSound.Play();
         float finalPosition = movingPart.transform.position.x + endPosition;
+
         while (movingPart.transform.position.x > finalPosition)
         {
-            movingPart.transform.position -= new Vector3(speed, 0, 0);
+            speed = (endPosition / hydraulicSound.clip.length) * Time.deltaTime;
+            movingPart.transform.position += new Vector3(speed, 0, 0);
             yield return new WaitForEndOfFrame();
         }
 
         movingPart.transform.position = new Vector3(finalPosition, movingPart.transform.position.y, movingPart.transform.position.z);
         yield return new WaitForEndOfFrame();
+        hydraulicSound.Stop();
+    }
+
+    private IEnumerator RaiseHydraulicBed()
+    {
+        hydraulicSound.Play();
+        float distance = bedEnd - hydraulicBed.transform.position.y;
+        while (hydraulicBed.transform.position.y < bedEnd)
+        {
+            speed = (distance / hydraulicSound.clip.length) * Time.deltaTime;
+            hydraulicBed.transform.position += new Vector3(0, speed, 0);
+            yield return new WaitForEndOfFrame();
+        }
+
+        hydraulicBed.transform.position = new Vector3(hydraulicBed.transform.position.x, bedEnd, hydraulicBed.transform.position.z);
+        yield return new WaitForEndOfFrame();
+        hydraulicSound.Stop();
     }
 
     private IEnumerator FmriSequence(int i)
