@@ -7,6 +7,7 @@ public class MriSequence : MonoBehaviour
 {
     public AudioSource mriSound;
     public AudioSource hydraulicSound;
+    public AudioSource hydraulicSoundShort;
     public AudioClip[] mriClips;
 
     public GameObject player;
@@ -28,7 +29,7 @@ public class MriSequence : MonoBehaviour
     void Start()
     {
         startPosition = movingPart.transform.position.x;
-        bedEnd = hydraulicBed.transform.position.y;
+        bedEnd = 1.041462f;
         Vector3 bedPosition = hydraulicBed.transform.position;
         bedPosition.y = bedStart;
         hydraulicBed.transform.position = bedPosition;
@@ -77,11 +78,11 @@ public class MriSequence : MonoBehaviour
 
     private IEnumerator RaiseHydraulicBed()
     {
-        hydraulicSound.Play();
+        hydraulicSoundShort.Play();
         float distance = bedEnd - hydraulicBed.transform.position.y;
         while (hydraulicBed.transform.position.y < bedEnd)
         {
-            speed = (distance / hydraulicSound.clip.length) * Time.deltaTime;
+            speed = (distance / hydraulicSoundShort.clip.length) * Time.deltaTime;
             hydraulicBed.transform.position += new Vector3(0, speed, 0);
             yield return new WaitForEndOfFrame();
         }
@@ -95,5 +96,13 @@ public class MriSequence : MonoBehaviour
     {
         mriSound.PlayOneShot(mriClips[i]);
         yield return new WaitForSeconds(mriClips[i].length);
+    }
+
+    public void SetBedHeight(float i)
+    {
+        bedStart = i;
+        Vector3 bedPosition = hydraulicBed.transform.position;
+        bedPosition.y = bedStart;
+        hydraulicBed.transform.position = bedPosition;
     }
 }

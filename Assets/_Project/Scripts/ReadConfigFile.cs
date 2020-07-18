@@ -29,8 +29,10 @@ public class ReadConfigFile : MonoBehaviour
             if (inp_ln.Contains("#BedHeight: "))
             {
                 float bedHeight = float.Parse(inp_ln.Replace("#BedHeight: ", ""));
-                if (bedHeight < 1.041462)
-                    mriSequence.bedStart = bedHeight;
+                if(bedHeight < 1.041462)
+                {
+                    mriSequence.SetBedHeight(bedHeight);
+                }
             }
         }
         inp_stm.Close();
