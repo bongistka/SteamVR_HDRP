@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -49,5 +50,12 @@ public class MirrorSlideshow : MonoBehaviour
     public void SetPauseLengthFromInput(string input)
     {
         secondsToWait = float.Parse(input, CultureInfo.InvariantCulture);
+    }
+
+    internal void ResetSlideshow()
+    {
+        StopCoroutine(LoadImage());
+        canvasText.enabled = false;
+        mirrorCanvas.enabled = false;
     }
 }

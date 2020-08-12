@@ -9,7 +9,7 @@ public class MriSequence : MonoBehaviour
     public AudioSource mriSound;
     public AudioSource insertBedSound;
     public AudioSource raiseBedSound;
-    public AudioClip[] mriClips;
+    //public AudioClip[] mriClips;
 
     public GameObject player;
 
@@ -29,6 +29,7 @@ public class MriSequence : MonoBehaviour
     private List<SequenceClip> clips = new List<SequenceClip>();
 
     public Text sequenceDebugText;
+    public Button launchSequenceButton;
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +61,7 @@ public class MriSequence : MonoBehaviour
 
     public void StartScanning()
     {
-        StartCoroutine(FmriSequence(0));
+        StartCoroutine(FmriSequence());
     }
 
     private IEnumerator MoveFmriBed()
@@ -97,10 +98,44 @@ public class MriSequence : MonoBehaviour
         insertBedSound.Stop();
     }
 
-    private IEnumerator FmriSequence(int i)
+    private IEnumerator FmriSequence()
     {
-        mriSound.PlayOneShot(mriClips[i]);
-        yield return new WaitForSeconds(mriClips[i].length);
+        sequenceDebugText.text = "Spouštení sekvence:";
+        yield return new WaitForSeconds(3);
+        foreach (SequenceClip clip in clips)
+        {
+            if(clip.shim != null)
+            {
+                if(clip.shim[clip.type] != null)
+                {
+                    sequenceDebugText.text = "Sekvence: " + clip.shim[clip.type].name;
+                    mriSound.PlayOneShot(clip.shim[clip.type]);
+                    yield return new WaitForSeconds(clip.shim[clip.type].length);
+                }
+            }
+            if (clip.mainSounds != null)
+            {
+                if (clip.isParadigma)
+                    GetComponent<MirrorSlideshow>().StartSlideshow();
+                if (clip.mainSounds[clip.type] != null)
+                {
+                    sequenceDebugText.text = "Sekvence: " + clip.mainSounds[clip.type].name;
+                    mriSound.clip = clip.mainSounds[clip.type];
+                    mriSound.loop = true;
+                    mriSound.Play();
+                    if (clip.duration !=0)
+                    {
+                        yield return new WaitForSeconds(clip.duration);
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(clip.mainSounds[clip.type].length);
+                    }
+                    mriSound.Stop();
+                }
+            }
+        }
+        sequenceDebugText.text = "Sekvence skončila";
     }
 
     public void SetBedHeight(float i)
@@ -119,5 +154,18 @@ public class MriSequence : MonoBehaviour
         {
             sequenceDebugText.text += clip.ToString();
         }
+        launchSequenceButton.interactable = true;
+    }
+
+    public void ResetSequenceClip()
+    {
+        StopCoroutine(FmriSequence());
+        sequenceDebugText.text = "Pokyny k nastavení protokolu:\n\nNejdříve vyplnte délku požadované sekvence, poté klikněte na tlačidlo. Pokud chcete začít znovu, použijte tlačidlo \"Reset\"";
+        clips.Clear();
+        launchSequenceButton.interactable = false;
+        DisableButton[] disabledButtons = GameObject.FindObjectsOfType<DisableButton>();
+        foreach(DisableButton button in disabledButtons)
+            button.GetComponent<Button>().interactable = true;
+        GetComponent<MirrorSlideshow>().ResetSlideshow();
     }
 }

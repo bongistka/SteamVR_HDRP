@@ -10,6 +10,8 @@ public class SequenceClip : MonoBehaviour
     public int type = 0;
     public float duration = 0.0f;
 
+    public bool isParadigma;
+
     private MriSequence mriSequence;
 
     private void Start()
