@@ -16,6 +16,7 @@ public class MriSequence : MonoBehaviour
     public GameObject hydraulicBed;
     public GameObject movingPart;
     public GameObject headPosition;
+    public GameObject mriCoilTopPart;
 
     [Range(0,1)]
     public float speed;
@@ -30,6 +31,9 @@ public class MriSequence : MonoBehaviour
 
     public Text sequenceDebugText;
     public Button launchSequenceButton;
+    public Button bedMovementButton;
+
+    private bool isIn;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +43,7 @@ public class MriSequence : MonoBehaviour
         Vector3 bedPosition = hydraulicBed.transform.position;
         bedPosition.y = bedStart;
         hydraulicBed.transform.position = bedPosition;
+        mriCoilTopPart.SetActive(false);
     }
 
     // Update is called once per frame
@@ -49,14 +54,21 @@ public class MriSequence : MonoBehaviour
 
     public void StartSequence()
     {
-        player.transform.parent = movingPart.transform;
-        StartCoroutine(MoveFmriBed());
+        if (!isIn)
+        {
+            player.transform.parent = movingPart.transform;
+            StartCoroutine(MoveFmriBed());
+        } else
+        {
+            StartCoroutine(EjectFmriBed());
+        }
     }
 
     public void SetPlayerPosition()
     {
         Vector3 difference = GameObject.FindWithTag("Player").transform.position - player.transform.position;
         player.transform.position = headPosition.transform.position - difference;
+        mriCoilTopPart.SetActive(true);
     }
 
     public void StartScanning()
@@ -64,8 +76,45 @@ public class MriSequence : MonoBehaviour
         StartCoroutine(FmriSequence());
     }
 
+    private IEnumerator EjectFmriBed()
+    {
+        bedMovementButton.interactable = false;
+
+        insertBedSound.Play();
+        float finalPosition = startPosition;
+
+        while (movingPart.transform.position.x < finalPosition)
+        {
+            speed = (endPosition / insertBedSound.clip.length) * Time.deltaTime;
+            movingPart.transform.position -= new Vector3(speed, 0, 0);
+            yield return new WaitForEndOfFrame();
+        }
+
+        movingPart.transform.position = new Vector3(finalPosition, movingPart.transform.position.y, movingPart.transform.position.z);
+        yield return new WaitForEndOfFrame();
+        insertBedSound.Stop();
+
+        raiseBedSound.Play();
+        float distance = hydraulicBed.transform.position.y - bedStart;
+        while (hydraulicBed.transform.position.y > bedStart)
+        {
+            speed = (distance / raiseBedSound.clip.length) * Time.deltaTime;
+            hydraulicBed.transform.position -= new Vector3(0, speed, 0);
+            yield return new WaitForEndOfFrame();
+        }
+
+        hydraulicBed.transform.position = new Vector3(hydraulicBed.transform.position.x, bedStart, hydraulicBed.transform.position.z);
+        yield return new WaitForEndOfFrame();
+        insertBedSound.Stop();
+
+        bedMovementButton.interactable = true;
+        bedMovementButton.GetComponentInChildren<Text>().text = "Zasunout postel";
+        isIn = false;
+    }
+
     private IEnumerator MoveFmriBed()
     {
+        bedMovementButton.interactable = false;
         yield return RaiseHydraulicBed();
         insertBedSound.Play();
         float finalPosition = movingPart.transform.position.x + endPosition;
@@ -80,6 +129,9 @@ public class MriSequence : MonoBehaviour
         movingPart.transform.position = new Vector3(finalPosition, movingPart.transform.position.y, movingPart.transform.position.z);
         yield return new WaitForEndOfFrame();
         insertBedSound.Stop();
+        bedMovementButton.interactable = true;
+        bedMovementButton.GetComponentInChildren<Text>().text = "Vysunout postel";
+        isIn = true;
     }
 
     private IEnumerator RaiseHydraulicBed()
