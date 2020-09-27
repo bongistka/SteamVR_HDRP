@@ -21,9 +21,8 @@ public class MirrorSlideshow : MonoBehaviour
 
     public void StartSlideshow()
     {
-        
+        Debug.Log("Slideshow Has Started");
         StartCoroutine(LoadImage());
-
     }
 
     IEnumerator LoadImage()

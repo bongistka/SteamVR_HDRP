@@ -31,6 +31,7 @@ public class MriSequence : MonoBehaviour
 
     public Text sequenceDebugText;
     public Button launchSequenceButton;
+    public Button resetSequenceButton;
     public Button bedMovementButton;
 
     private bool isIn;
@@ -152,6 +153,7 @@ public class MriSequence : MonoBehaviour
 
     private IEnumerator FmriSequence()
     {
+        resetSequenceButton.GetComponentInChildren<Text>().text = "Zastavení sekvence";
         sequenceDebugText.text = "Spouštení sekvence:";
         yield return new WaitForSeconds(3);
         foreach (SequenceClip clip in clips)
@@ -188,6 +190,7 @@ public class MriSequence : MonoBehaviour
             }
         }
         sequenceDebugText.text = "Sekvence skončila";
+        resetSequenceButton.GetComponentInChildren<Text>().text = "Reset sekvence";
     }
 
     public void SetBedHeight(float i)
@@ -212,12 +215,13 @@ public class MriSequence : MonoBehaviour
     public void ResetSequenceClip()
     {
         StopCoroutine(FmriSequence());
-        sequenceDebugText.text = "Pokyny k nastavení protokolu:\n\nNejdříve vyplnte délku požadované sekvence, poté klikněte na tlačidlo. Pokud chcete začít znovu, použijte tlačidlo \"Reset\"";
+        sequenceDebugText.text = "Pokyny k nastavení protokolu:\n\nNejdříve vyplnte délku požadované sekvence a její typ, poté klikněte na tlačidlo s názvem sekvence. Pokud chcete začít znovu, použijte tlačidlo \"Reset\"";
         clips.Clear();
         launchSequenceButton.interactable = false;
         DisableButton[] disabledButtons = GameObject.FindObjectsOfType<DisableButton>();
         foreach(DisableButton button in disabledButtons)
             button.GetComponent<Button>().interactable = true;
         GetComponent<MirrorSlideshow>().ResetSlideshow();
+        resetSequenceButton.GetComponentInChildren<Text>().text = "Reset sekvence";
     }
 }
