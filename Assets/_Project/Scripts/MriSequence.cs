@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Valve.VR.InteractionSystem;
 
 public class MriSequence : MonoBehaviour
 {
@@ -17,6 +18,10 @@ public class MriSequence : MonoBehaviour
     public GameObject movingPart;
     public GameObject headPosition;
     public GameObject mriCoilTopPart;
+    public GameObject avatar;
+
+    public GameObject rightHandRenderModel;
+    public GameObject leftHandRenderModel;
 
     [Range(0,1)]
     public float speed;
@@ -45,6 +50,7 @@ public class MriSequence : MonoBehaviour
         bedPosition.y = bedStart;
         hydraulicBed.transform.position = bedPosition;
         mriCoilTopPart.SetActive(false);
+        avatar.SetActive(false);
     }
 
     // Update is called once per frame
@@ -70,6 +76,14 @@ public class MriSequence : MonoBehaviour
         Vector3 difference = GameObject.FindWithTag("Player").transform.position - player.transform.position;
         player.transform.position = headPosition.transform.position - difference;
         mriCoilTopPart.SetActive(true);
+        ActivateAvatar(true);
+    }
+
+    private void ActivateAvatar(bool isActive)
+    {
+        avatar.SetActive(isActive);
+        rightHandRenderModel.GetComponent<Hand>().SetVisibility(!isActive);
+        leftHandRenderModel.GetComponent<Hand>().SetVisibility(!isActive);
     }
 
     public void StartScanning()
@@ -111,6 +125,7 @@ public class MriSequence : MonoBehaviour
         bedMovementButton.interactable = true;
         bedMovementButton.GetComponentInChildren<Text>().text = "Zasunout postel";
         isIn = false;
+        ActivateAvatar(false);
     }
 
     private IEnumerator MoveFmriBed()
