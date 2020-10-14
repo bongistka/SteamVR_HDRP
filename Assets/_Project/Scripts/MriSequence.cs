@@ -17,7 +17,7 @@ public class MriSequence : MonoBehaviour
     public GameObject hydraulicBed;
     public GameObject movingPart;
     public GameObject headPosition;
-    public GameObject mriCoilTopPart;
+    public GameObject[] mriCoilTopPart;
     public GameObject avatar;
 
     public GameObject rightHandRenderModel;
@@ -38,6 +38,7 @@ public class MriSequence : MonoBehaviour
     public Button launchSequenceButton;
     public Button resetSequenceButton;
     public Button bedMovementButton;
+    public Button hideCoilButton;
 
     private bool isIn;
 
@@ -49,7 +50,8 @@ public class MriSequence : MonoBehaviour
         Vector3 bedPosition = hydraulicBed.transform.position;
         bedPosition.y = bedStart;
         hydraulicBed.transform.position = bedPosition;
-        mriCoilTopPart.SetActive(false);
+        foreach(GameObject go in mriCoilTopPart)
+            go.SetActive(false);
         avatar.SetActive(false);
     }
 
@@ -75,7 +77,9 @@ public class MriSequence : MonoBehaviour
     {
         Vector3 difference = GameObject.FindWithTag("Player").transform.position - player.transform.position;
         player.transform.position = headPosition.transform.position - difference;
-        mriCoilTopPart.SetActive(true);
+        foreach (GameObject go in mriCoilTopPart)
+            go.SetActive(true);
+        hideCoilButton.interactable = true;
         ActivateAvatar(true);
     }
 
@@ -238,5 +242,12 @@ public class MriSequence : MonoBehaviour
             button.GetComponent<Button>().interactable = true;
         GetComponent<MirrorSlideshow>().ResetSlideshow();
         resetSequenceButton.GetComponentInChildren<Text>().text = "Reset sekvence";
+    }
+
+    public void HideCoil()
+    {
+        foreach (GameObject go in mriCoilTopPart)
+            go.SetActive(false);
+        hideCoilButton.interactable = false;
     }
 }

@@ -12,6 +12,9 @@ public class MirrorSlideshow : MonoBehaviour
     public Text canvasText;
     public string[] filePaths;
     public float secondsToWait = 10;
+    public bool isActive = true;
+
+    public GameObject[] mirrorObjects;
 
     private void Start()
     {
@@ -21,8 +24,11 @@ public class MirrorSlideshow : MonoBehaviour
 
     public void StartSlideshow()
     {
-        Debug.Log("Slideshow Has Started");
-        StartCoroutine(LoadImage());
+        if (isActive)
+        {
+            Debug.Log("Slideshow Has Started");
+            StartCoroutine(LoadImage());
+        }
     }
 
     IEnumerator LoadImage()
@@ -56,5 +62,14 @@ public class MirrorSlideshow : MonoBehaviour
         StopCoroutine(LoadImage());
         canvasText.enabled = false;
         mirrorCanvas.enabled = false;
+    }
+
+    public void ToggleMirror(bool isActive)
+    {
+        this.isActive = isActive;
+        foreach(GameObject mirrorObject in mirrorObjects)
+        {
+            mirrorObject.SetActive(isActive);
+        }
     }
 }
