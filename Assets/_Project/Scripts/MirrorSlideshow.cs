@@ -14,6 +14,7 @@ public class MirrorSlideshow : MonoBehaviour
     public float secondsToWait = 10;
     public bool isActive = true;
 
+    public string folderName = "";
     public GameObject[] mirrorObjects;
 
     private void Start()
@@ -36,7 +37,7 @@ public class MirrorSlideshow : MonoBehaviour
         mirrorCanvas.enabled = true;
         mirrorCanvas.color = Color.white;
 
-        filePaths = Directory.GetFiles(System.IO.Directory.GetCurrentDirectory() + @"\Configs\Stimuli\", "*.*");
+        filePaths = Directory.GetFiles(System.IO.Directory.GetCurrentDirectory() + @"\Configs\Stimuli\" + folderName, "*.*");
 
         foreach (string path in filePaths)
         {

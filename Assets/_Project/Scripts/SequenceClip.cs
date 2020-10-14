@@ -14,7 +14,7 @@ public class SequenceClip : MonoBehaviour
 
     private MriSequence mriSequence;
 
-    private void Start()
+    private void Awake()
     {
         mriSequence = GameObject.FindWithTag("MriSequence").GetComponent<MriSequence>();
     }

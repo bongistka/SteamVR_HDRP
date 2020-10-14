@@ -1,1 +1,22 @@
 #BedHeight: 0.55
+
+===========================
+#FolderName: ExampleStimuli
+===========================
+
+#Lokalizer: true
+
+#Morfologie: true
+#Morfologie delka [s]: 10
+#Morfologie protokol: T1
+
+#Resting: false
+#Resting delka [s]: 10
+#Resting protokol: Standardni
+
+#Paradigma: true
+#Paradigma delka [s]: 10
+#Paradigma protokol: Multiband
+
+#DTI: true
+#DTI delka [s]: 10
