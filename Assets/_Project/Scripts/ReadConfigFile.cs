@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ReadConfigFile : MonoBehaviour
 {
     public MriSequence mriSequence;
     public MirrorSlideshow mirrorSlideshow;
+    public InputField trInputField;
+    public InputField bedHeightField;
+
+    public Dropdown configDropdown;
 
     public SequenceClip lokalizerClip;
     public SequenceClip morfologieClip;
@@ -22,13 +27,24 @@ public class ReadConfigFile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ReadTextFile(Application.dataPath + "/../Configs/" + "default.txt");
+        InitializeConfigMenu();
+        //ReadTextFile(Application.dataPath + "/../Configs/" + "default.txt");
     }
 
-    // Update is called once per frame
-    void Update()
+    void InitializeConfigMenu()
     {
-        
+        string[] filePaths = Directory.GetFiles(Application.dataPath + "/../Configs/", "*.txt");
+        foreach (string c in filePaths)
+        {
+            string fileName = System.IO.Path.GetFileName(c);
+            configDropdown.options.Add(new Dropdown.OptionData() { text = fileName });
+        }
+    }
+
+    public void ReadMenu()
+    {
+        if(configDropdown.options[configDropdown.value].text!= "Vyberte konfiguraci")
+            ReadTextFile(Application.dataPath + "/../Configs/" + configDropdown.options[configDropdown.value].text);
     }
 
     void ReadTextFile(string file_path)
@@ -40,11 +56,18 @@ public class ReadConfigFile : MonoBehaviour
             string inp_ln = inp_stm.ReadLine();
             if (inp_ln.Contains("#BedHeight: "))
             {
-                float bedHeight = float.Parse(inp_ln.Replace("#BedHeight: ", ""));
+                bedHeightField.text = inp_ln.Replace("#BedHeight: ", "");
+                float bedHeight = float.Parse(bedHeightField.text);
+                
                 if(bedHeight < 1.041462)
                 {
                     mriSequence.SetBedHeight(bedHeight);
                 }
+            }
+            if (inp_ln.Contains("#TR: "))
+            {
+                trInputField.text = inp_ln.Replace("#TR: ", "");
+                mirrorSlideshow.SetPauseLengthFromInput(trInputField.text);
             }
             if (inp_ln.Contains("#FolderName: "))
             {
@@ -88,7 +111,10 @@ public class ReadConfigFile : MonoBehaviour
                 else
                     restingClip.SetType(1);
                 if (restingOn)
+                {
                     restingClip.AddClipToProtocol();
+                    paradigmaClip.GetComponent<Button>().interactable = false;
+                }
             }
             if (inp_ln.Contains("#Paradigma: "))
             {
@@ -105,7 +131,10 @@ public class ReadConfigFile : MonoBehaviour
                 else
                     paradigmaClip.SetType(1);
                 if (paradigmaOn)
+                {
                     paradigmaClip.AddClipToProtocol();
+                    restingClip.GetComponent<Button>().interactable = false;
+                }
             }
             if (inp_ln.Contains("#DTI: "))
             {
@@ -116,6 +145,11 @@ public class ReadConfigFile : MonoBehaviour
                 dtiClip.SetDuration(inp_ln.Replace("#DTI delka [s]: ", ""));
                 if (dtiOn)
                     dtiClip.AddClipToProtocol();
+            }
+            if (inp_ln.Contains("#Civka: "))
+            {
+                bool isOn = bool.Parse(inp_ln.Replace("#Civka: ", ""));
+                mirrorSlideshow.ToggleMirror(isOn);
             }
         }
         inp_stm.Close();

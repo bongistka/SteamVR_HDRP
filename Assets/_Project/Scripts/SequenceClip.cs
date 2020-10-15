@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SequenceClip : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class SequenceClip : MonoBehaviour
     public float duration = 0.0f;
 
     public bool isParadigma;
+    public Dropdown dropdown;
+    public InputField inputField;
 
     private MriSequence mriSequence;
 
@@ -21,12 +24,16 @@ public class SequenceClip : MonoBehaviour
 
     public void SetDuration(string durationString)
     {
+        if (inputField)
+            inputField.text = durationString;
         duration = float.Parse(durationString, CultureInfo.InvariantCulture);
     }
 
     public void SetType(int i)
     {
         type = i;
+        if (dropdown)
+            dropdown.value = i;
     }
 
     public void AddClipToProtocol()

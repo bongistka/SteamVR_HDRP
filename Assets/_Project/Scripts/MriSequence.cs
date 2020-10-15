@@ -39,6 +39,7 @@ public class MriSequence : MonoBehaviour
     public Button resetSequenceButton;
     public Button bedMovementButton;
     public Button hideCoilButton;
+    public Dropdown configDropdown;
 
     private bool isIn;
 
@@ -53,12 +54,6 @@ public class MriSequence : MonoBehaviour
         foreach(GameObject go in mriCoilTopPart)
             go.SetActive(false);
         avatar.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void StartSequence()
@@ -223,7 +218,12 @@ public class MriSequence : MonoBehaviour
     public void AddSequenceClip(SequenceClip newClip)
     {
         sequenceDebugText.text = "";
-        clips.Add(newClip);
+
+        if (!clips.Contains(newClip))
+            clips.Add(newClip);
+        else
+            clips[clips.IndexOf(newClip)] = newClip;
+
         foreach (SequenceClip clip in clips)
         {
             sequenceDebugText.text += clip.ToString();
@@ -242,6 +242,7 @@ public class MriSequence : MonoBehaviour
             button.GetComponent<Button>().interactable = true;
         GetComponent<MirrorSlideshow>().ResetSlideshow();
         resetSequenceButton.GetComponentInChildren<Text>().text = "Reset sekvence";
+        configDropdown.value = 0;
     }
 
     public void HideCoil()

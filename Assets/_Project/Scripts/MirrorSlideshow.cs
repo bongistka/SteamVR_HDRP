@@ -16,6 +16,7 @@ public class MirrorSlideshow : MonoBehaviour
 
     public string folderName = "";
     public GameObject[] mirrorObjects;
+    public Toggle mirrorToggle;
 
     private void Start()
     {
@@ -68,6 +69,7 @@ public class MirrorSlideshow : MonoBehaviour
     public void ToggleMirror(bool isActive)
     {
         this.isActive = isActive;
+        mirrorToggle.isOn = isActive;
         foreach(GameObject mirrorObject in mirrorObjects)
         {
             mirrorObject.SetActive(isActive);
