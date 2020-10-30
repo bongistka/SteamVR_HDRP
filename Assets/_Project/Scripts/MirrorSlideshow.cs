@@ -22,6 +22,7 @@ public class MirrorSlideshow : MonoBehaviour
     {
         canvasText.enabled = false;
         mirrorCanvas.enabled = false;
+        DisplayMirror(false);
     }
 
     public void StartSlideshow()
@@ -66,13 +67,27 @@ public class MirrorSlideshow : MonoBehaviour
         mirrorCanvas.enabled = false;
     }
 
-    public void ToggleMirror(bool isActive)
+    public void SetMirror(bool isActive)
     {
         this.isActive = isActive;
         mirrorToggle.isOn = isActive;
-        foreach(GameObject mirrorObject in mirrorObjects)
+    }
+
+    public void DisplayMirror(bool isVisible)
+    {
+        if (isActive && isVisible)
         {
-            mirrorObject.SetActive(isActive);
+            foreach (GameObject mirrorObject in mirrorObjects)
+            {
+                mirrorObject.SetActive(isVisible);
+            }
+        }
+        else if (!isVisible)
+        {
+            foreach (GameObject mirrorObject in mirrorObjects)
+            {
+                mirrorObject.SetActive(isVisible);
+            }
         }
     }
 }

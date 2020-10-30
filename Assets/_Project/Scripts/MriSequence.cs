@@ -72,8 +72,8 @@ public class MriSequence : MonoBehaviour
     {
         Vector3 difference = GameObject.FindWithTag("Player").transform.position - player.transform.position;
         player.transform.position = headPosition.transform.position - difference;
-        foreach (GameObject go in mriCoilTopPart)
-            go.SetActive(true);
+        //foreach (GameObject go in mriCoilTopPart)
+        //    go.SetActive(true);
         hideCoilButton.interactable = true;
         ActivateAvatar(true);
     }
@@ -245,10 +245,11 @@ public class MriSequence : MonoBehaviour
         configDropdown.value = 0;
     }
 
-    public void HideCoil()
+    public void ToggleCoil(bool isOn)
     {
         foreach (GameObject go in mriCoilTopPart)
-            go.SetActive(false);
-        hideCoilButton.interactable = false;
+            go.SetActive(isOn);
+        GetComponent<MirrorSlideshow>().DisplayMirror(isOn);
+        hideCoilButton.GetComponentInChildren<Text>().text = (isOn ? "Schovat cívku" : "Zobrazit cívku");
     }
 }

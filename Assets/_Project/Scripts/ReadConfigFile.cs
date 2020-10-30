@@ -149,7 +149,7 @@ public class ReadConfigFile : MonoBehaviour
             if (inp_ln.Contains("#Civka: "))
             {
                 bool isOn = bool.Parse(inp_ln.Replace("#Civka: ", ""));
-                mirrorSlideshow.ToggleMirror(isOn);
+                mirrorSlideshow.SetMirror(isOn);
             }
         }
         inp_stm.Close();
