@@ -12,28 +12,26 @@ FMRI tréninkové aplikace
 
 
 
-#BedHeight: 0.55
-#TR: 5
+#BedHeight: 0.75
 
 =============================
-#FolderName: ExampleStimuli
+
 =============================
 
 __________Sekvence:__________
-#Lokalizer: true
+#Lokalizer: false
 
 #Morfologie: true
-#Morfologie delka [s]: 10
-#Morfologie protokol: T1
+#Morfologie delka [s]: 8
+#Morfologie protokol: T2
 
-#Resting: false
+#Resting: true
+#Resting delka [s]: 10
+#Resting protokol: Standardni
 
-#Paradigma: true
-#Paradigma delka [s]: 10
-#Paradigma protokol: Multiband
+#Paradigma: false
 
 #DTI: true
 #DTI delka [s]: 10
 ______________________________
 
-#Civka: false

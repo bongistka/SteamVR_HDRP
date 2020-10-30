@@ -1,0 +1,16 @@
+#BedHeight: 0.75
+
+#Lokalizer: false
+
+#Morfologie: true
+#Morfologie delka [s]: 8
+#Morfologie protokol: T2
+
+#Resting: true
+#Resting delka [s]: 10
+#Resting protokol: Standardni
+
+#Paradigma: false
+
+#DTI: true
+#DTI delka [s]: 10
