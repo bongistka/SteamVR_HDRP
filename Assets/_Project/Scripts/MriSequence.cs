@@ -92,6 +92,8 @@ public class MriSequence : MonoBehaviour
 
     private IEnumerator EjectFmriBed()
     {
+        GetComponent<MirrorSlideshow>().canvasText.enabled = false;
+        GetComponent<MirrorSlideshow>().mirrorCanvas.enabled = false;
         bedMovementButton.interactable = false;
 
         insertBedSound.Play();
@@ -210,9 +212,13 @@ public class MriSequence : MonoBehaviour
     public void SetBedHeight(float i)
     {
         bedStart = i;
-        Vector3 bedPosition = hydraulicBed.transform.position;
-        bedPosition.y = bedStart;
-        hydraulicBed.transform.position = bedPosition;
+        
+        if (!isIn)
+        {
+            Vector3 bedPosition = hydraulicBed.transform.position;
+            bedPosition.y = bedStart;
+            hydraulicBed.transform.position = bedPosition;
+        }
     }
 
     public void AddSequenceClip(SequenceClip newClip)
