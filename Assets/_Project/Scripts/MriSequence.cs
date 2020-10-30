@@ -251,5 +251,7 @@ public class MriSequence : MonoBehaviour
             go.SetActive(isOn);
         GetComponent<MirrorSlideshow>().DisplayMirror(isOn);
         hideCoilButton.GetComponentInChildren<Text>().text = (isOn ? "Schovat cívku" : "Zobrazit cívku");
+        hideCoilButton.onClick.RemoveAllListeners();
+        hideCoilButton.onClick.AddListener(delegate () { ToggleCoil(!isOn); });
     }
 }
