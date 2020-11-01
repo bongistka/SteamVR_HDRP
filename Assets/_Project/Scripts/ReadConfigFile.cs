@@ -146,9 +146,9 @@ public class ReadConfigFile : MonoBehaviour
                 if (dtiOn)
                     dtiClip.AddClipToProtocol();
             }
-            if (inp_ln.Contains("#Civka: "))
+            if (inp_ln.Contains("#Zrcadlo: "))
             {
-                bool isOn = bool.Parse(inp_ln.Replace("#Civka: ", ""));
+                bool isOn = bool.Parse(inp_ln.Replace("#Zrcadlo: ", ""));
                 mirrorSlideshow.SetMirror(isOn);
             }
         }

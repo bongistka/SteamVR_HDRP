@@ -36,4 +36,4 @@ __________Sekvence:__________
 #DTI delka [s]: 10
 ______________________________
 
-#Civka: false
+#Zrcadlo: false
