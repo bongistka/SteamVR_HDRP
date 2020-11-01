@@ -26,7 +26,7 @@ public class SequenceClip : MonoBehaviour
     {
         if (inputField)
             inputField.text = durationString;
-        duration = float.Parse(durationString, CultureInfo.InvariantCulture);
+        duration = float.Parse(durationString.Replace(',', '.'));
     }
 
     public void SetType(int i)

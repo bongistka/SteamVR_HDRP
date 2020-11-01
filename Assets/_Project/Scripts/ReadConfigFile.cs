@@ -57,7 +57,7 @@ public class ReadConfigFile : MonoBehaviour
             if (inp_ln.Contains("#BedHeight: "))
             {
                 bedHeightField.text = inp_ln.Replace("#BedHeight: ", "");
-                float bedHeight = float.Parse(bedHeightField.text);
+                float bedHeight = float.Parse(bedHeightField.text.Replace(',', '.'));
                 
                 if(bedHeight < 1.041462)
                 {

@@ -28,7 +28,7 @@ public class UIinput : MonoBehaviour
 
     public void SetBedHeightFromInput(string input)
     {
-        float i = float.Parse(input, CultureInfo.InvariantCulture);
+        float i = float.Parse(input.Replace(',', '.'));
         mriSequence.SetBedHeight(i);
     }
 
