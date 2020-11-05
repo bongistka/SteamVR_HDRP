@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,7 +58,7 @@ public class ReadConfigFile : MonoBehaviour
             if (inp_ln.Contains("#BedHeight: "))
             {
                 bedHeightField.text = inp_ln.Replace("#BedHeight: ", "");
-                float bedHeight = float.Parse(bedHeightField.text.Replace(',', '.'));
+                float.TryParse(bedHeightField.text.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out float bedHeight);
                 
                 if(bedHeight < 1.041462)
                 {

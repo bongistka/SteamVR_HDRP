@@ -57,7 +57,7 @@ public class MirrorSlideshow : MonoBehaviour
 
     public void SetPauseLengthFromInput(string input)
     {
-        secondsToWait = float.Parse(input.Replace(',', '.'));
+        float.TryParse(input.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out secondsToWait);
     }
 
     internal void ResetSlideshow()
