@@ -8,6 +8,7 @@ public class AddSequenceClip : MonoBehaviour
 {
     [SerializeField] Dropdown dropdown;
     [SerializeField] Button removeButton;
+    [SerializeField] Button StartSequenceButton;
     [Serializable]
     public struct SequencePrefab
     {
@@ -24,7 +25,7 @@ public class AddSequenceClip : MonoBehaviour
             return;
 
         GameObject go = Instantiate(sequencePrefabs[i].prefab);
-        go.transform.parent = this.transform;
+        go.transform.SetParent(this.transform, false);
 
         Vector3 pos = parentObject.GetComponent<RectTransform>().anchoredPosition;
 
@@ -40,11 +41,12 @@ public class AddSequenceClip : MonoBehaviour
         sp.verticalSize = sequencePrefabs[i].verticalSize;
         sp.prefab = go;
         currentClips.Add(sp);
+        dropdown.value = 5;
         
         if (currentClips.Count > 0)
-            removeButton.interactable = true;
+            removeButton.interactable = StartSequenceButton.interactable = true;
         else
-            removeButton.interactable = false;
+            removeButton.interactable = StartSequenceButton.interactable = false;
     }
 
     public void RemoveLastSequence()
@@ -65,5 +67,43 @@ public class AddSequenceClip : MonoBehaviour
             removeButton.interactable = true;
         else
             removeButton.interactable = false;
+    }
+
+    public void AddClipsToSequence()
+    {
+        foreach(SequencePrefab clip in currentClips)
+        {
+            clip.prefab.GetComponentInChildren<SequenceClip>().AddClipToProtocol();
+        }
+    }
+
+    public void ResetSequence()
+    {
+        foreach (SequencePrefab clip in currentClips)
+        {
+            Destroy(clip.prefab);
+        }
+        currentClips = new List<SequencePrefab>();
+        Vector3 pos = parentObject.GetComponent<RectTransform>().anchoredPosition;
+        pos.y = -55;
+        parentObject.GetComponent<RectTransform>().anchoredPosition = pos;
+    }
+
+    internal void SetDurationOfLast(string v)
+    {
+        if (currentClips.Count > 0) //prevent IndexOutOfRangeException for empty list
+        {
+            int i = currentClips.Count - 1;
+            currentClips[i].prefab.GetComponentInChildren<SequenceClip>().SetDuration(v);
+        }
+    }
+
+    internal void SetTypeOfLast(int v)
+    {
+        if (currentClips.Count > 0) //prevent IndexOutOfRangeException for empty list
+        {
+            int i = currentClips.Count - 1;
+            currentClips[i].prefab.GetComponentInChildren<SequenceClip>().SetType(v);
+        }
     }
 }

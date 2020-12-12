@@ -13,12 +13,7 @@ public class ReadConfigFile : MonoBehaviour
     public InputField bedHeightField;
 
     public Dropdown configDropdown;
-
-    public SequenceClip lokalizerClip;
-    public SequenceClip morfologieClip;
-    public SequenceClip restingClip;
-    public SequenceClip paradigmaClip;
-    public SequenceClip dtiClip;
+    [SerializeField] AddSequenceClip addSequenceClip;
 
     private bool morfologieOn;
     private bool restingOn;
@@ -78,74 +73,69 @@ public class ReadConfigFile : MonoBehaviour
             {
                 bool isOn = bool.Parse(inp_ln.Replace("#Lokalizer: ", ""));
                 if(isOn)
-                    lokalizerClip.AddClipToProtocol();
+                    addSequenceClip.AddSequence(0);
             }
             if (inp_ln.Contains("#Morfologie: "))
             {
                 morfologieOn = bool.Parse(inp_ln.Replace("#Morfologie: ", ""));
+                if (morfologieOn)
+                    addSequenceClip.AddSequence(1);
             }
             if (inp_ln.Contains("#Morfologie delka [s]: "))
             {
-                morfologieClip.SetDuration(inp_ln.Replace("#Morfologie delka [s]: ", ""));
+                addSequenceClip.SetDurationOfLast(inp_ln.Replace("#Morfologie delka [s]: ", ""));
+                //morfologieClip.SetDuration(inp_ln.Replace("#Morfologie delka [s]: ", ""));
             }
             if (inp_ln.Contains("#Morfologie protokol: "))
             {
                 if (inp_ln.Replace("#Morfologie protokol: ", "") == "T1")
-                    morfologieClip.SetType(0);
+                    addSequenceClip.SetTypeOfLast(0);
                 else
-                    morfologieClip.SetType(1);
-                if (morfologieOn)
-                    morfologieClip.AddClipToProtocol();
+                    addSequenceClip.SetTypeOfLast(1);
             }
             if (inp_ln.Contains("#Resting: "))
             {
                 restingOn = bool.Parse(inp_ln.Replace("#Resting: ", ""));
+                if (restingOn)
+                    addSequenceClip.AddSequence(2);
             }
             if (inp_ln.Contains("#Resting delka [s]: "))
             {
-                restingClip.SetDuration(inp_ln.Replace("#Resting delka [s]: ", ""));
+                addSequenceClip.SetDurationOfLast(inp_ln.Replace("#Resting delka [s]: ", ""));
             }
             if (inp_ln.Contains("#Resting protokol: "))
             {
                 if (inp_ln.Replace("#Resting protokol: ", "") == "Standardni")
-                    restingClip.SetType(0);
+                    addSequenceClip.SetTypeOfLast(0);
                 else
-                    restingClip.SetType(1);
-                if (restingOn)
-                {
-                    restingClip.AddClipToProtocol();
-                    paradigmaClip.GetComponent<Button>().interactable = false;
-                }
+                    addSequenceClip.SetTypeOfLast(1);
             }
             if (inp_ln.Contains("#Paradigma: "))
             {
                 paradigmaOn = bool.Parse(inp_ln.Replace("#Paradigma: ", ""));
+                if (paradigmaOn)
+                    addSequenceClip.AddSequence(3);
             }
             if (inp_ln.Contains("#Paradigma delka [s]: "))
             {
-                paradigmaClip.SetDuration(inp_ln.Replace("#Paradigma delka [s]: ", ""));
+                addSequenceClip.SetDurationOfLast(inp_ln.Replace("#Paradigma delka [s]: ", ""));
             }
             if (inp_ln.Contains("#Paradigma protokol: "))
             {
                 if (inp_ln.Replace("#Paradigma protokol: ", "") == "Standardni")
-                    paradigmaClip.SetType(0);
+                    addSequenceClip.SetTypeOfLast(0);
                 else
-                    paradigmaClip.SetType(1);
-                if (paradigmaOn)
-                {
-                    paradigmaClip.AddClipToProtocol();
-                    restingClip.GetComponent<Button>().interactable = false;
-                }
+                    addSequenceClip.SetTypeOfLast(1);
             }
             if (inp_ln.Contains("#DTI: "))
             {
                 dtiOn = bool.Parse(inp_ln.Replace("#DTI: ", ""));
+                if (dtiOn)
+                    addSequenceClip.AddSequence(4);
             }
             if (inp_ln.Contains("#DTI delka [s]: "))
             {
-                dtiClip.SetDuration(inp_ln.Replace("#DTI delka [s]: ", ""));
-                if (dtiOn)
-                    dtiClip.AddClipToProtocol();
+                addSequenceClip.SetDurationOfLast(inp_ln.Replace("#DTI delka [s]: ", ""));
             }
             if (inp_ln.Contains("#Zrcadlo: "))
             {
