@@ -39,8 +39,14 @@ public class ReadConfigFile : MonoBehaviour
 
     public void ReadMenu()
     {
-        if(configDropdown.options[configDropdown.value].text!= "Vyberte konfiguraci")
+        addSequenceClip.ResetSequence();
+        if (configDropdown.value != 0)
             ReadTextFile(Application.dataPath + "/../Configs/" + configDropdown.options[configDropdown.value].text);
+    }
+
+    public void ResetDropdownValue()
+    {
+        configDropdown.value = 0;
     }
 
     void ReadTextFile(string file_path)
