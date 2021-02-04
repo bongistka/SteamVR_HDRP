@@ -40,6 +40,8 @@ public class MriSequence : MonoBehaviour
     public Button bedMovementButton;
     public Button hideCoilButton;
     public Dropdown configDropdown;
+    [SerializeField] Text avatarText;
+    private bool avatarActive;
 
     private bool isIn;
 
@@ -75,14 +77,16 @@ public class MriSequence : MonoBehaviour
         //foreach (GameObject go in mriCoilTopPart)
         //    go.SetActive(true);
         hideCoilButton.interactable = true;
-        ActivateAvatar(true);
+        //ActivateAvatar(true);
     }
 
-    private void ActivateAvatar(bool isActive)
+    public void ActivateAvatar()
     {
-        avatar.SetActive(isActive);
-        rightHandRenderModel.GetComponent<Hand>().SetVisibility(!isActive);
-        leftHandRenderModel.GetComponent<Hand>().SetVisibility(!isActive);
+        avatarActive = !avatarActive;
+        avatar.SetActive(avatarActive);
+        rightHandRenderModel.GetComponent<Hand>().SetVisibility(!avatarActive);
+        leftHandRenderModel.GetComponent<Hand>().SetVisibility(!avatarActive);
+        avatarText.text = avatarActive ? "Skrýt avatara" : "Zobrazit avatara";
     }
 
     public void StartScanning()
@@ -126,7 +130,7 @@ public class MriSequence : MonoBehaviour
         bedMovementButton.interactable = true;
         bedMovementButton.GetComponentInChildren<Text>().text = "Zasunout postel";
         isIn = false;
-        ActivateAvatar(false);
+        //ActivateAvatar(false);
     }
 
     private IEnumerator MoveFmriBed()

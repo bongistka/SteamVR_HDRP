@@ -8,7 +8,8 @@ public class AddSequenceClip : MonoBehaviour
 {
     [SerializeField] Dropdown dropdown;
     [SerializeField] Button removeButton;
-    [SerializeField] Button StartSequenceButton;
+    [SerializeField] Button startSequenceButton;
+    [SerializeField] RectTransform container;
     [Serializable]
     public struct SequencePrefab
     {
@@ -25,7 +26,7 @@ public class AddSequenceClip : MonoBehaviour
             return;
 
         GameObject go = Instantiate(sequencePrefabs[i].prefab);
-        go.transform.SetParent(this.transform, false);
+        go.transform.SetParent(container, false);
 
         Vector3 pos = parentObject.GetComponent<RectTransform>().anchoredPosition;
 
@@ -44,9 +45,9 @@ public class AddSequenceClip : MonoBehaviour
         dropdown.value = 5;
         
         if (currentClips.Count > 0)
-            removeButton.interactable = StartSequenceButton.interactable = true;
+            removeButton.interactable = startSequenceButton.interactable = true;
         else
-            removeButton.interactable = StartSequenceButton.interactable = false;
+            removeButton.interactable = startSequenceButton.interactable = false;
     }
 
     public void RemoveLastSequence()

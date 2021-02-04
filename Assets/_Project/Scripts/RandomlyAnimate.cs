@@ -15,8 +15,8 @@ public class RandomlyAnimate : MonoBehaviour
     void RandomThing()
     {
         float randomTime = Random.Range(5, 150);
-
-        StartCoroutine("SetLaborantHappy");
+        if(gameObject.activeSelf)
+            StartCoroutine("SetLaborantHappy");
 
         Invoke("RandomThing", randomTime);
     }

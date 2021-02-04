@@ -13,6 +13,7 @@ public class MirrorSlideshow : MonoBehaviour
     public string[] filePaths;
     public float secondsToWait = 10;
     public bool isActive = true;
+    public bool trSet;
 
     public string folderName = "";
     public GameObject[] mirrorObjects;
@@ -58,6 +59,7 @@ public class MirrorSlideshow : MonoBehaviour
     public void SetPauseLengthFromInput(string input)
     {
         float.TryParse(input.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out secondsToWait);
+        trSet = true;
     }
 
     internal void ResetSlideshow()
