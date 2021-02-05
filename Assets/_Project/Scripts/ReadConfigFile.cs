@@ -9,7 +9,7 @@ public class ReadConfigFile : MonoBehaviour
 {
     public MriSequence mriSequence;
     public MirrorSlideshow mirrorSlideshow;
-    public InputField trInputField;
+    //public InputField trInputField;
     public InputField bedHeightField;
 
     public Dropdown configDropdown;
@@ -68,8 +68,8 @@ public class ReadConfigFile : MonoBehaviour
             }
             if (inp_ln.Contains("#TR: "))
             {
-                trInputField.text = inp_ln.Replace("#TR: ", "");
-                mirrorSlideshow.SetPauseLengthFromInput(trInputField.text);
+                //trInputField.text = inp_ln.Replace("#TR: ", "");
+                mirrorSlideshow.SetPauseLengthFromInput(inp_ln.Replace("#TR: ", ""));
             }
             if (inp_ln.Contains("#FolderName: "))
             {

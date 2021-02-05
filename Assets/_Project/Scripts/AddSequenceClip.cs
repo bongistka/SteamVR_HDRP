@@ -10,6 +10,9 @@ public class AddSequenceClip : MonoBehaviour
     [SerializeField] Button removeButton;
     [SerializeField] Button startSequenceButton;
     [SerializeField] RectTransform container;
+    public float gapSize = 20;
+    private float containerSize = 120;
+    private float defaultContainerSize;
     [Serializable]
     public struct SequencePrefab
     {
@@ -19,6 +22,11 @@ public class AddSequenceClip : MonoBehaviour
     [SerializeField] SequencePrefab[] sequencePrefabs;
     private List<SequencePrefab> currentClips = new List<SequencePrefab>();
     [SerializeField] GameObject parentObject;
+
+    private void Start()
+    {
+        defaultContainerSize = container.sizeDelta.y;
+    }
 
     public void AddSequence(int i)
     {
@@ -32,11 +40,15 @@ public class AddSequenceClip : MonoBehaviour
 
         go.GetComponent<RectTransform>().offsetMin = go.GetComponent<RectTransform>().offsetMax = Vector2.zero;
         Vector3 pos1 = pos;
-        pos1.x -= 20;
+        pos1.x -= gapSize;
         go.GetComponent<RectTransform>().anchoredPosition = pos1;
         
         pos.y -= ( sequencePrefabs[i].verticalSize + (sequencePrefabs[i].verticalSize/30)*10);
         parentObject.GetComponent<RectTransform>().anchoredPosition = pos;
+
+        containerSize += (sequencePrefabs[i].verticalSize + gapSize);
+        if (containerSize > defaultContainerSize)
+            container.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, containerSize);
 
         SequencePrefab sp = new SequencePrefab();
         sp.verticalSize = sequencePrefabs[i].verticalSize;
@@ -60,6 +72,13 @@ public class AddSequenceClip : MonoBehaviour
             Vector3 pos = parentObject.GetComponent<RectTransform>().anchoredPosition;
             pos.y += (currentClips[i].verticalSize + (currentClips[i].verticalSize / 30) * 10);
             parentObject.GetComponent<RectTransform>().anchoredPosition = pos;
+            
+            containerSize -= (currentClips[i].verticalSize + gapSize);
+
+            if (containerSize > defaultContainerSize)
+                container.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, containerSize);
+            else
+                container.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, defaultContainerSize);
 
             currentClips.RemoveAt(i);
         }
@@ -80,6 +99,9 @@ public class AddSequenceClip : MonoBehaviour
 
     public void ResetSequence()
     {
+        containerSize = 120;
+        container.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, defaultContainerSize);
+
         foreach (SequencePrefab clip in currentClips)
         {
             Destroy(clip.prefab);
