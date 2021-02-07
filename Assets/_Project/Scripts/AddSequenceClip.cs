@@ -46,7 +46,7 @@ public class AddSequenceClip : MonoBehaviour
         pos.y -= ( sequencePrefabs[i].verticalSize + (sequencePrefabs[i].verticalSize/30)*10);
         parentObject.GetComponent<RectTransform>().anchoredPosition = pos;
 
-        containerSize += (sequencePrefabs[i].verticalSize + gapSize);
+        containerSize += (sequencePrefabs[i].verticalSize + (sequencePrefabs[i].verticalSize / 30) * 10);
         if (containerSize > defaultContainerSize)
             container.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, containerSize);
 
@@ -73,7 +73,7 @@ public class AddSequenceClip : MonoBehaviour
             pos.y += (currentClips[i].verticalSize + (currentClips[i].verticalSize / 30) * 10);
             parentObject.GetComponent<RectTransform>().anchoredPosition = pos;
             
-            containerSize -= (currentClips[i].verticalSize + gapSize);
+            containerSize -= (currentClips[i].verticalSize + (currentClips[i].verticalSize / 30) * 10);
 
             if (containerSize > defaultContainerSize)
                 container.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, containerSize);
