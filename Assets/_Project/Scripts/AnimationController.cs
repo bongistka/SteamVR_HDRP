@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-public class RandomlyAnimate : MonoBehaviour
+public class AnimationController : MonoBehaviour
 {
-    [SerializeField] float speed = 0.5f;
-    [SerializeField] float rotationSpeed = 2.0f;
+    [SerializeField] float distance = 1.6f;
+    [Tooltip("Degrees per second")]
+    [SerializeField] float doorRotationSpeed = 0.7f;
+    [SerializeField] float waitBeforeOpenTheDoor = 2.0f;
     [SerializeField] CircularDrive door;
     private Animator animator;
     void Start()
     {
         animator = GetComponent<Animator>();
         float randomTime = Random.Range(5, 50);
-        Invoke("RandomThing", randomTime);
+        Invoke("RandomlyMove", randomTime);
     }
 
     private void Update()
@@ -30,34 +32,34 @@ public class RandomlyAnimate : MonoBehaviour
     IEnumerator DoOpenDoor()
     {
         CancelInvoke();
-        //transform.LookAt(target.transform.position);
+        var currentPosition = transform.position;
         animator.SetBool("IsWalking", true);
 
-        yield return new WaitForSeconds(1.75f);
+        while (Vector3.Distance(currentPosition, transform.position) < distance)
+            yield return new WaitForEndOfFrame();
 
         animator.SetBool("IsOpening", true);
         animator.SetBool("IsWalking", false);
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(waitBeforeOpenTheDoor);
 
         while (door.transform.rotation.eulerAngles.y < 90)
         {
-            door.transform.Rotate(Vector3.up, 0.7f);
+            door.transform.Rotate(Vector3.up, doorRotationSpeed);
             yield return new WaitForSeconds(0.01f);
         }
 
         animator.SetBool("IsOpening", false);
-        //float randomTime = Random.Range(5, 150);
         Invoke("RandomlyPoint", 2.0f);
     }
 
-    void RandomThing()
+    void RandomlyMove()
     {
         float randomTime = Random.Range(5, 150);
         if(gameObject.activeSelf)
             StartCoroutine("SetLaborantHappy");
 
-        Invoke("RandomThing", randomTime);
+        Invoke("RandomlyMove", randomTime);
     }
 
     void RandomlyPoint()
@@ -74,7 +76,6 @@ public class RandomlyAnimate : MonoBehaviour
         animator.SetBool("IsHappy", true);
         float randomTime = Random.Range(1, 20);
         yield return new WaitForSeconds(randomTime);
-        //Debug.Log("Laborant is randomly happy");
         animator.SetBool("IsHappy", false);
     }
 
